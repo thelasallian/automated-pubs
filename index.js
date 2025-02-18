@@ -23,7 +23,8 @@ app.get('/menage/:text', async (req, res) => {
       text: req.params.text,
       image: _dataURI,
       fontdata: _fontData
-    }
+    },
+    puppeteerArgs: { args: ['--no-sandbox'] }
   })
   res.writeHead(200, { 'Content-Type': 'image/png' });
   res.end(image, 'binary');
