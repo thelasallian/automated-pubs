@@ -1,6 +1,8 @@
 # automated-pubs
 Uses `node-html-to-image` to add an overlay image as text.
 
+Known issues are posted on the issues tab!
+
 ## Installation
 1. Clone into the repository:
 ```bash
@@ -18,11 +20,14 @@ $ docker run -d -p <host-port>:<container-port> --name <container-name> <image-n
 - `node-html-to-image` uses *Puppeteer* under the hood, which makes deploying a pain. The Dockerfile ensures that Puppeteer is installed and works. Please install with Docker or make sure Puppeteer can be ran on your system.
 
 # TO DO:
+> NOTE: as much as possible, please create a new branch for each new one being made to make it easier to view revert and view changes. 
+> NOTE 2: known bugs and other issues have been placed under the issues tab.
+
 Courtesy to @angelocguerra:
 1. Choose Type of Newsbite
 - A: Headline w/ Generic Visual
      - [ ] 1.1. Univ
-     - [ ] 1.2. Menage
+     - [X] 1.2. Menage `(/menage/:text)` // - let's follow this route convention (?)
      - [ ] 1.3. Sports
      - [ ] 1.4. Vanguard
      - [ ] 1.5. Breaking News
@@ -44,3 +49,4 @@ Courtesy to @angelocguerra:
      - [ ] 1.8. Halalan 2025
 
 - [ ] C: Quote Visual
+
