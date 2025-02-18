@@ -20,7 +20,8 @@ $ docker run -d -p <host-port>:<container-port> --name <container-name> <image-n
 - `node-html-to-image` uses *Puppeteer* under the hood, which makes deploying a pain. The Dockerfile ensures that Puppeteer is installed and works. Please install with Docker or make sure Puppeteer can be ran on your system.
 
 # TO DO:
-> NOTE: as much as possible, please create a new branch for each new one being made to make it easier to view revert and view changes. 
+> NOTE: as much as possible, please create a new branch for each new one being made to make it easier to view revert and view changes.
+
 > NOTE 2: known bugs and other issues have been placed under the issues tab.
 
 Courtesy to @angelocguerra:
