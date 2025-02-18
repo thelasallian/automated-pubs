@@ -26,6 +26,12 @@ $ docker run -d -p <host-port>:<container-port> --name <container-name> <image-n
 
 Courtesy to @angelocguerra:
 1. Choose Type of Newsbite
+- OTHER:
+     - [ ] constraints for text/char limit
+     - [ ] image handling
+     - [ ] tg bot-ifying these endpoints (?)
+     - [ ] frontend for vis generation
+          
 - A: Headline w/ Generic Visual
      - [ ] 1.1. Univ
      - [X] 1.2. Menage `(/menage/:text)` // - let's follow this route convention (?)
