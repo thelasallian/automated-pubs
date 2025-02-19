@@ -1,12 +1,6 @@
 # automated pubs
 todo Courtesy to @angelocguerra:
 1. Choose Type of Newsbite
-- OTHER:
-     - [ ] constraints for text/char limit
-     - [ ] image handling
-     - [ ] tg bot-ifying these endpoints (?)
-     - [ ] frontend for vis generation
-          
 - A: Headline w/ Generic Visual
      - [ ] 1.1. Univ
      - [X] 1.2. Menage
