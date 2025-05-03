@@ -82,7 +82,7 @@
             <div class="controls">
                 <input type="text" id="textInput" placeholder="Enter text" style="width: 250px; height:50px;">
                 <br><br>
-                <button onclick="drawText()">Add Text</button>
+                <button onclick="drawTextTypeA()">Add Text</button>
                 <br><br>
                 <button onclick="exportCanvas()">Download Image</button>
                 <br><br>
@@ -169,7 +169,21 @@
                     }
                 }
 
-                async function drawText() {
+                async function drawTextTypeA() {
+                    const subtype = subtypeDropdown.value;
+
+                    if (subtype === "University" || subtype === "Menagerie" || subtype === "Sports" || subtype === "Vanguard" || subtype === "#Halalan2025" || subtype === "University LA Session" || subtype === "Just In LA Session" || subtype === "National Situationer") {
+                        yStartVal = 800;
+                        linesVal = ["", ""] // Two lines only
+                        currentLineVal = 1;
+                        currentLineMaxVal = 2;
+                    } else if (subtype === "Breaking News" || subtype === "Just In" || subtype === "Update") {
+                        yStartVal = 715;
+                        linesVal = ["", "", ""] // Three lines
+                        currentLineVal = 2;
+                        currentLineMaxVal = 3;
+                    }
+
                     const text = document.getElementById("textInput").value;
                     if (text.trim() === "") return;
 
@@ -180,7 +194,7 @@
                     const lineHeight = 95;
                     const maxWidth = 1080 - 140; // 70px margin on both sides
                     const xCenter = 540;
-                    let yStart = 800;
+                    let yStart = yStartVal;
 
                     ctx.font = "63pt 'HexFranklin'";
                     ctx.fillStyle = "white";
@@ -188,31 +202,32 @@
                     ctx.textAlign = "center";
 
                     const words = text.split(" ");
-                    const lines = ["", ""]; // Two lines only
+                    const lines = linesVal;
                     let currentLine = 0;
 
                     for (let i = 0; i < words.length; i++) {
                         const testLine = lines[currentLine] + words[i] + " ";
                         const testWidth = ctx.measureText(testLine).width;
 
-                        if (testWidth > maxWidth && currentLine === 0) {
+                        if (testWidth > maxWidth && currentLine < currentLineVal) {
                             currentLine++;
                         }
 
-                        if (currentLine < 2) {
+                        if (currentLine < currentLineMaxVal) {
                             lines[currentLine] += words[i] + " ";
                         } else {
                             // If text exceeds two lines, append to the second line anyway
-                            lines[1] += words[i] + " ";
+                            lines[currentLineVal] += words[i] + " ";
                         }
                     }
 
-                    // Trim trailing space and draw
-                    lines[0] = lines[0].trim();
-                    lines[1] = lines[1].trim();
-
-                    ctx.fillText(lines[0], xCenter, yStart);
-                    ctx.fillText(lines[1], xCenter, yStart + lineHeight);
+                    // Trim and draw
+                    for (let i = 0; i < currentLineMaxVal; i++) {
+                        lines[i] = lines[i].trim();
+                        if (lines[i]) {
+                            ctx.fillText(lines[i], xCenter, yStart + (i * lineHeight));
+                        }
+                    }
                 }
 
                 // Export canvas as an image
