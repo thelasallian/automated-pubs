@@ -101,8 +101,18 @@ async function addImageToCanvas() {
     const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
 
+    if (!subtype) {
+        alert("Please select a Subtype before adding an image.");
+        return;
+    }
+
     if (!file) {
         alert("Please select an image first.");
+        return;
+    }
+
+    if (text.trim() === "") {
+        alert("Please enter a headline.");
         return;
     }
 
@@ -182,11 +192,7 @@ function drawHeadlineText(nbtype, subtype, text) {
         currentLineVal = 1;
         currentLineMaxVal = 2;
     } else {
-        // For other types (e.g., Type C), default to 2 lines
-        yStartVal = 800;
-        linesVal = ["", ""];
-        currentLineVal = 1;
-        currentLineMaxVal = 2;
+        alert("Invalid combination of NB Type and Subtype.");
     }
 
     const fontSize = 63;
@@ -206,14 +212,14 @@ function drawHeadlineText(nbtype, subtype, text) {
         const testLine = linesVal[currentLine] + words[i] + " ";
         const testWidth = ctx.measureText(testLine).width;
 
-        if (testWidth > maxWidth && currentLine < currentLineVal) {
+        if (testWidth > maxWidth) {
             currentLine++;
         }
 
         if (currentLine < currentLineMaxVal) {
             linesVal[currentLine] += words[i] + " ";
         } else {
-            linesVal[currentLineVal] += words[i] + " ";
+            alert("Text is too long. Please shorten it.");
         }
     }
 
@@ -230,7 +236,16 @@ async function drawText() {
     const text = document.getElementById("textInput").value;
     const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
-    if (text.trim() === "") return;
+
+    if (!subtype) {
+        alert("Please select a Subtype before adding text.");
+        return;
+    }
+
+    if (text.trim() === "") {
+        alert("Please enter a headline.");
+        return;
+    }
 
     await document.fonts.load("63pt 'HexFranklin'");
     ctx.drawImage(image, 0, 0, 1080, 1080);
