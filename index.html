@@ -4,56 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TLS Automated Pubs</title>
-    <style>
-        @font-face {
-            font-family: 'HexFranklin';
-            src: url('font.ttf') format('truetype');
-            font-weight: bold;
-            font-style: normal;
-        }
-
-        body {
-            font-family: 'HexFranklin', Arial, sans-serif;
-            text-align: center;
-            margin: 0px;
-            padding: 0px;
-        }
-        canvas {
-            border: 1px solid black;
-            vertical-align: middle;
-        }
-        .controls {
-            margin-top: 10px;
-        }
-        h1 {
-            font-size: 63pt;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        .column {
-            float: left;
-            width: 50%;
-            height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        @media screen and (max-width: 600px) {
-            .column {
-                width: 100%;
-                height:auto;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+    <script src="index.js" defer></script>
     <div class="row">
         <div class="column" style="background-color:#7BA877;">
             <!-- Heading -->
@@ -69,7 +24,7 @@
             <option value="TypeC">Type C: Quote Visual</option>
             </select>
 
-            <br><br>
+            <br>
 
             <!-- <label for="dd_subtype">Choose Subtype:</label><br> -->
             <select id="dd_subtype" name="subtype" style="width: 250px;">
@@ -78,11 +33,27 @@
 
             <br><br>
 
+            <input type="text" id="textInput" placeholder="Input headline" style="width: 80%; height:50px;">
+            <br><br>
+
             <!-- Controls -->
             <div class="controls">
-                <input type="text" id="textInput" placeholder="Enter text" style="width: 250px; height:50px;">
-                <br><br>
-                <button onclick="drawTextTypeA()">Add Text</button>
+                <!-- Text Controls Group-->
+                <div id="textControls">
+                    <button onclick="drawText()">Add Text</button>
+                </div>
+                <!-- End of Text Controls Group  -->
+
+                <!-- Image Controls Group -->
+                <div id="imageControls" style="display: none;">
+                    <input type="text" id="photoCreditsInput" placeholder="Input Photo Credits" style="width: 80%; height: 30px;">
+                    <br><br>
+                    <input type="file" id="imgInput" accept="image/*">
+                    <br><br>
+                    <button id="addImageBtn" onclick="addImageToCanvas()">Add Image</button>
+                </div>
+                <!-- End of Image Controls Group  -->
+
                 <br><br>
                 <button onclick="exportCanvas()">Download Image</button>
                 <br><br>
@@ -91,154 +62,6 @@
 
         <div class="column">
             <canvas id="canvas" width="1080" height="1080" style="width:80%; aspect-ratio: 1 / 1;"></canvas>
-
-            <script>
-                const canvas = document.getElementById("canvas");
-                const ctx = canvas.getContext("2d");
-                let image = new Image();
-
-                const subtypeOptions = {
-                    TypeA: [
-                    "University",
-                    "Menagerie",
-                    "Sports",
-                    "Vanguard",
-                    "Breaking News",
-                    "Just In",
-                    "Update",
-                    "Halalan2025",
-                    "University LA Session",
-                    "Just In LA Session",
-                    "National Situationer"
-                    ],
-                    TypeB: [
-                    "University",
-                    "Menagerie",
-                    "Sports",
-                    "Vanguard",
-                    "Breaking News",
-                    "Just In",
-                    "Update",
-                    "Halalan2025"
-                    ],
-                    TypeC: [
-                    "Quote Visual"
-                    ]
-                };
-
-                const nbtypeDropdown = document.getElementById("dd_nbtype");
-                const subtypeDropdown = document.getElementById("dd_subtype");
-
-                // Populate subtypes
-                nbtypeDropdown.addEventListener("change", function () {
-                const selectedType = this.value;
-                subtypeDropdown.innerHTML = '<option value="" disabled selected>Select a Subtype</option>';
-
-                if (subtypeOptions[selectedType]) {
-                    subtypeOptions[selectedType].forEach(function (optionText) {
-                    const option = document.createElement("option");
-                    option.value = optionText;
-                    option.text = optionText;
-                    if (selectedType === "TypeC") option.selected = true;
-                    subtypeDropdown.appendChild(option);
-                    });
-                }
-                });
-
-                // Load image when both dropdowns are selected
-                nbtypeDropdown.addEventListener("change", loadTemplateImage);
-                subtypeDropdown.addEventListener("change", loadTemplateImage);
-
-                function loadTemplateImage() {
-                    const nbtype = nbtypeDropdown.value;
-                    const subtype = subtypeDropdown.value;
-
-                    if (nbtype && subtype) {
-                        const path = `Templates/${nbtype}/${subtype}.png`;
-                        image.src = path;
-
-                        image.onload = () => {
-                        canvas.width = image.width;
-                        canvas.height = image.height;
-                        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-                        };
-
-                        image.onerror = () => {
-                        alert(`Image not found at path: ${path}`);
-                        };
-                    }
-                }
-
-                async function drawTextTypeA() {
-                    const subtype = subtypeDropdown.value;
-
-                    if (subtype === "University" || subtype === "Menagerie" || subtype === "Sports" || subtype === "Vanguard" || subtype === "Halalan2025" || subtype === "University LA Session" || subtype === "Just In LA Session" || subtype === "National Situationer") {
-                        yStartVal = 800;
-                        linesVal = ["", ""] // Two lines only
-                        currentLineVal = 1;
-                        currentLineMaxVal = 2;
-                    } else if (subtype === "Breaking News" || subtype === "Just In" || subtype === "Update") {
-                        yStartVal = 715;
-                        linesVal = ["", "", ""] // Three lines
-                        currentLineVal = 2;
-                        currentLineMaxVal = 3;
-                    }
-
-                    const text = document.getElementById("textInput").value;
-                    if (text.trim() === "") return;
-
-                    await document.fonts.load("63pt 'HexFranklin'");
-                    ctx.drawImage(image, 0, 0, 1080, 1080);
-
-                    const fontSize = 63;
-                    const lineHeight = 95;
-                    const maxWidth = 1080 - 140; // 70px margin on both sides
-                    const xCenter = 540;
-                    let yStart = yStartVal;
-
-                    ctx.font = "63pt 'HexFranklin'";
-                    ctx.fillStyle = "white";
-                    ctx.lineWidth = 2;
-                    ctx.textAlign = "center";
-
-                    const words = text.split(" ");
-                    const lines = linesVal;
-                    let currentLine = 0;
-
-                    for (let i = 0; i < words.length; i++) {
-                        const testLine = lines[currentLine] + words[i] + " ";
-                        const testWidth = ctx.measureText(testLine).width;
-
-                        if (testWidth > maxWidth && currentLine < currentLineVal) {
-                            currentLine++;
-                        }
-
-                        if (currentLine < currentLineMaxVal) {
-                            lines[currentLine] += words[i] + " ";
-                        } else {
-                            // If text exceeds two lines, append to the second line anyway
-                            lines[currentLineVal] += words[i] + " ";
-                        }
-                    }
-
-                    // Trim and draw
-                    for (let i = 0; i < currentLineMaxVal; i++) {
-                        lines[i] = lines[i].trim();
-                        if (lines[i]) {
-                            ctx.fillText(lines[i], xCenter, yStart + (i * lineHeight));
-                        }
-                    }
-                }
-
-                // Export canvas as an image
-                function exportCanvas() {
-                    const link = document.createElement("a");
-                    link.download = "canvas-image.png";
-                    link.href = canvas.toDataURL("image/png");
-                    link.click();
-                }
-
-            </script>
         </div>
     </div>
 </body>
