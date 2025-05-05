@@ -228,12 +228,13 @@ function drawHeadlineText(nbtype, subtype, text) {
 // For Type A only -- prompted by "Add Text" button"
 async function drawText() {
     const text = document.getElementById("textInput").value;
+    const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
     if (text.trim() === "") return;
 
     await document.fonts.load("63pt 'HexFranklin'");
     ctx.drawImage(image, 0, 0, 1080, 1080);
-    drawHeadlineText(subtype, text);
+    drawHeadlineText(nbtype, subtype, text);
 }
 
 // Export canvas as an image
