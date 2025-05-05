@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'HexFranklin';
+    src: url('font.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    font-family: 'HexFranklin', Arial, sans-serif;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+}
+canvas {
+    border: 1px solid black;
+    vertical-align: middle;
+}
+.controls {
+    margin-top: 10px;
+}
+h1 {
+    font-size: 63pt;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.column {
+    float: left;
+    width: 50%;
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 600px) {
+    .column {
+        width: 100%;
+        height:auto;
+    }
+}
