@@ -12,7 +12,6 @@ body {
     padding: 0px;
 }
 canvas {
-    border: 1px solid black;
     vertical-align: middle;
 }
 .controls {
