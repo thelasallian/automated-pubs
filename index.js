@@ -201,7 +201,7 @@ async function addImageToCanvas() {
                 ctx.font = "20pt 'HexFranklin'";
                 ctx.fillStyle = "white";
                 ctx.textAlign = "left";
-                ctx.fillText(`Photo Credits: ${credits}`, 20, 540);
+                ctx.fillText(`Photo Credits: ${credits}`, 20, 560);
             }
 
             addCanvasUpdateAnimation();
