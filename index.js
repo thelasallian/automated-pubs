@@ -74,6 +74,44 @@ nbtypeDropdown.addEventListener("change", () => {
 nbtypeDropdown.addEventListener("change", loadTemplateImage);
 subtypeDropdown.addEventListener("change", loadTemplateImage);
 
+// Custom Alert Function
+function showAlert(message, type = 'error') {
+    const alertContainer = document.getElementById('alertContainer');
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type}`;
+    
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = message;
+    
+    const closeButton = document.createElement('button');
+    closeButton.className = 'alert-close';
+    closeButton.innerHTML = '×';
+    closeButton.onclick = () => {
+        alert.classList.add('hide');
+        setTimeout(() => alert.remove(), 300);
+    };
+    
+    alert.appendChild(messageSpan);
+    alert.appendChild(closeButton);
+    alertContainer.appendChild(alert);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (alert.parentNode) {
+            alert.classList.add('hide');
+            setTimeout(() => alert.remove(), 300);
+        }
+    }, 5000);
+}
+
+function addCanvasUpdateAnimation() {
+    const canvas = document.getElementById('canvas');
+    canvas.classList.remove('canvas-update');
+    // Trigger reflow
+    void canvas.offsetWidth;
+    canvas.classList.add('canvas-update');
+}
+
 function loadTemplateImage() {
     const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
@@ -83,13 +121,14 @@ function loadTemplateImage() {
         image.src = path;
 
         image.onload = () => {
-        canvas.width = image.width;
-        canvas.height = image.height;
-        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+            canvas.width = image.width;
+            canvas.height = image.height;
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+            addCanvasUpdateAnimation();
         };
 
         image.onerror = () => {
-        alert(`Image not found at path: ${path}`);
+            showAlert(`Image not found at path: ${path}`);
         };
     }
 }
@@ -102,17 +141,17 @@ async function addImageToCanvas() {
     const subtype = subtypeDropdown.value;
 
     if (!subtype) {
-        alert("Please select a Subtype before adding an image.");
+        showAlert("Please select a Subtype before adding an image.");
         return;
     }
 
     if (!file) {
-        alert("Please select an image first.");
+        showAlert("Please select an image first.");
         return;
     }
 
     if (text.trim() === "") {
-        alert("Please enter a headline.");
+        showAlert("Please enter a headline.");
         return;
     }
 
@@ -164,6 +203,8 @@ async function addImageToCanvas() {
                 ctx.textAlign = "left";
                 ctx.fillText(`Photo Credits: ${credits}`, 20, 540);
             }
+
+            addCanvasUpdateAnimation();
         };
         uploadedImg.src = event.target.result;
     };
@@ -192,7 +233,7 @@ function drawHeadlineText(nbtype, subtype, text) {
         currentLineVal = 1;
         currentLineMaxVal = 2;
     } else {
-        alert("Invalid combination of NB Type and Subtype.");
+        showAlert("Invalid combination of NB Type and Subtype.");
     }
 
     const fontSize = 63;
@@ -219,7 +260,7 @@ function drawHeadlineText(nbtype, subtype, text) {
         if (currentLine < currentLineMaxVal) {
             linesVal[currentLine] += words[i] + " ";
         } else {
-            alert("Text is too long. Please shorten it.");
+            showAlert("Text is too long. Please shorten it.");
         }
     }
 
@@ -238,18 +279,19 @@ async function drawText() {
     const subtype = subtypeDropdown.value;
 
     if (!subtype) {
-        alert("Please select a Subtype before adding text.");
+        showAlert("Please select a Subtype before adding text.");
         return;
     }
 
     if (text.trim() === "") {
-        alert("Please enter a headline.");
+        showAlert("Please enter a headline.");
         return;
     }
 
     await document.fonts.load("63pt 'HexFranklin'");
     ctx.drawImage(image, 0, 0, 1080, 1080);
     drawHeadlineText(nbtype, subtype, text);
+    addCanvasUpdateAnimation();
 }
 
 // Export canvas as an image
