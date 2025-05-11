@@ -248,6 +248,7 @@ function drawHeadlineText(nbtype, subtype, text) {
 
     const words = text.split(" ");
     let currentLine = 0;
+    let alertShown = false;
 
     for (let i = 0; i < words.length; i++) {
         const testLine = linesVal[currentLine] + words[i] + " ";
@@ -259,8 +260,10 @@ function drawHeadlineText(nbtype, subtype, text) {
 
         if (currentLine < currentLineMaxVal) {
             linesVal[currentLine] += words[i] + " ";
-        } else {
+        } else if (!alertShown) {
+            // Show alert only once
             showAlert("Text is too long. Please shorten it.");
+            alertShown = true;
         }
     }
 
