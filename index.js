@@ -54,12 +54,16 @@ const imgInput = document.getElementById("imgInput");
 const addImageBtn = document.getElementById("addImageBtn");
 const imageControlsDiv = document.getElementById("imageControls");
 const textControlsDiv = document.getElementById("textControls");
+const textInput = document.getElementById("textInput");
+const typeCFields = document.getElementById("typeCFields");
 
+// Disable image controls by default
 nbtypeDropdown.addEventListener("change", () => {
     const selectedType = nbtypeDropdown.value;
 
     const shouldEnableImageControls = selectedType === "TypeB" || selectedType === "TypeC";
     const shouldEnableTextControls = selectedType === "TypeA";
+    const shouldShowTypeCFields = selectedType === "TypeC";
 
     // Image controls toggle
     imgInput.disabled = !shouldEnableImageControls;
@@ -68,6 +72,10 @@ nbtypeDropdown.addEventListener("change", () => {
 
     // Text controls toggle
     textControlsDiv.style.display = shouldEnableTextControls ? "block" : "none";
+
+    // Type C Fields toggle
+    typeCFields.style.display = shouldShowTypeCFields ? "block" : "none";
+    textInput.style.display = shouldShowTypeCFields ? "none" : "block";
 });
 
 // Load image when both dropdowns are selected
@@ -85,7 +93,7 @@ function showAlert(message, type = 'error') {
     
     const closeButton = document.createElement('button');
     closeButton.className = 'alert-close';
-    closeButton.innerHTML = '×';
+    closeButton.innerHTML = 'x';
     closeButton.onclick = () => {
         alert.classList.add('hide');
         setTimeout(() => alert.remove(), 300);
@@ -135,10 +143,16 @@ function loadTemplateImage() {
 
 async function addImageToCanvas() {
     const file = imgInput.files[0];
-    const text = document.getElementById("textInput").value;
+    let text;
     const credits = document.getElementById("photoCreditsInput").value;
     const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
+
+    if (nbtype === "TypeC") {
+        text = document.getElementById("quoteInput").value;
+    } else {
+        text = document.getElementById("textInput").value;
+    }
 
     if (!subtype) {
         showAlert("Please select a Subtype before adding an image.");
@@ -162,8 +176,19 @@ async function addImageToCanvas() {
             // Redraw the base template
             ctx.drawImage(image, 0, 0, 1080, 1080);
 
-            const targetWidth = 1080;
-            const targetHeight = 580;
+            let targetWidth, targetHeight;
+            
+            if (nbtype === "TypeC") {
+                targetWidth = 460;
+                targetHeight = 1080;
+            } else {
+                targetWidth = 1080;
+                targetHeight = 580;
+            }
+
+            // For Type C only
+            const destX = 1080 - targetWidth; // Right side of canvas
+            const destY = 0;
 
             const imgWidth = uploadedImg.width;
             const imgHeight = uploadedImg.height;
@@ -186,15 +211,28 @@ async function addImageToCanvas() {
             }
 
             // Draw the cropped image
-            ctx.drawImage(
-                uploadedImg,
-                sourceX, sourceY, sourceWidth, sourceHeight,
-                0, 0, targetWidth, targetHeight
-            );
+            if(nbtype === "TypeC") {
+                ctx.drawImage(
+                    uploadedImg,
+                    sourceX, sourceY, sourceWidth, sourceHeight,
+                    destX, destY, targetWidth, targetHeight
+                );
+            } else {
+                ctx.drawImage(
+                    uploadedImg,
+                    sourceX, sourceY, sourceWidth, sourceHeight,
+                    0, 0, targetWidth, targetHeight
+                );
+            }
 
             // Load font and draw text
             await document.fonts.load("63pt 'HexFranklin'");
-            drawHeadlineText(nbtype, subtype, text);
+            if (nbtype === "TypeC"){
+                //drawQuoteText(text);
+                drawTypeCSubtext();
+            } else {
+                drawHeadlineText(nbtype, subtype, text);
+            }
 
             // Draw photo credits
             if (credits.trim() !== "") {
@@ -211,37 +249,59 @@ async function addImageToCanvas() {
     reader.readAsDataURL(file);
 }
 
+function drawTypeCSubtext() {
+    console.log("trig");
+    const position = document.getElementById("positionInput").value;
+    const name = document.getElementById("nameInput").value;
+    const context = document.getElementById("contextInput").value;
+
+    ctx.fillStyle = "white";
+    ctx.textAlign = "left";
+
+    // Draw position
+    ctx.font = "24pt 'HexFranklin'";
+    ctx.fillText(position, 44, 856);
+
+    // Draw name
+    ctx.font = "57pt 'HexFranklin'";
+    ctx.fillText(name, 44, 927);
+
+    // Draw context
+    ctx.font = "normal 21pt 'HexFranklin'";
+    ctx.fillText(context, 44, 970);
+}
+
 function drawHeadlineText(nbtype, subtype, text) {
     if (!nbtype || !text.trim()) return;
     if (!subtype || !text.trim()) return;
 
-    let yStartVal, linesVal, currentLineVal, currentLineMaxVal;
+    let yStartVal, linesVal, currentLineMaxVal;
 
     if (nbtype === "TypeA" && ["University", "Menagerie", "Sports", "Vanguard", "Halalan2025", "University LA Session", "Just In LA Session", "National Situationer"].includes(subtype)) { // Type A Batch 1
         yStartVal = 800;
         linesVal = ["", ""];
-        currentLineVal = 1;
         currentLineMaxVal = 2;
     } else if (nbtype === "TypeA" && ["Breaking News", "Just In", "Update"].includes(subtype)) { // Type A Batch 2
         yStartVal = 715;
         linesVal = ["", "", ""];
-        currentLineVal = 2;
         currentLineMaxVal = 3;
     } else if (nbtype === "TypeB" && ["University", "Menagerie", "Sports", "Vanguard", "Breaking News", "Just In", "Update", "Halalan2025"].includes(subtype)) { // Type B
         yStartVal = 830;
         linesVal = ["", ""];
-        currentLineVal = 1;
         currentLineMaxVal = 2;
+    } else if (nbtype === "TypeC" && ["Quote Visual"].includes(subtype)) { // Type C
+        yStartVal = 800;
+        linesVal = ["", "", ""];
+        currentLineMaxVal = 3;
     } else {
         showAlert("Invalid combination of NB Type and Subtype.");
     }
 
-    const fontSize = 63;
     const lineHeight = 95;
     const maxWidth = 1080 - 140; // margin
     const xCenter = 540;
 
-    ctx.font = `${fontSize}pt 'HexFranklin'`;
+    ctx.font = `63pt 'HexFranklin'`;
     ctx.fillStyle = "white";
     ctx.lineWidth = 2;
     ctx.textAlign = "center";
