@@ -31,22 +31,21 @@
                     <option value="" disabled selected>Select a Subtype</option>
                 </select>
 
-                <textarea required id="textInput" placeholder="Input Headline" rows="3" maxlength="100" class="w-full p-3 px-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none"></textarea>
+                <textarea required id="textInput" placeholder="Input Headline" rows="3" maxlength="100" class="w-full p-3 px-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none hidden"></textarea>
+                <!-- Type C Input Fields -->
+                <div id="typeCFields" class="w-full max-w-[500px] mt-8 hidden">
+                    <textarea required id="quoteInput" placeholder="Input Quote" rows="3" class="w-full p-3 px-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none"></textarea>
+                    <input type="text" id="positionInput" placeholder="Input Position" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
+                    <input type="text" id="nameInput" placeholder="Input Name" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
+                    <input type="text" id="contextInput" placeholder="Input Context" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
+                </div>
 
-            </div>
-
-            <!-- Type C Input Fields -->
-             <div id="typeCFields" class="w-full max-w-[500px] mt-8 animate-fade-in-up hidden" style="animation-delay: 0.4s;">
-                <textarea required id="quoteInput" placeholder="Input Quote" rows="3" class="w-full p-3 px-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none"></textarea>
-                <input type="text" id="positionInput" placeholder="Input Position" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
-                <input type="text" id="nameInput" placeholder="Input Name" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
-                <input type="text" id="contextInput" placeholder="Input Context" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
             </div>
 
             <!-- Controls -->
             <div class="w-full max-w-[500px] mt-8 animate-fade-in-up" style="animation-delay: 0.4s;">
                 <!-- Text Controls Group-->
-                <div id="textControls" class="mb-4">
+                <div id="textControls" class="mb-4 hidden">
                     <button onclick="drawText()" class="w-[200px] p-3 mb-2 rounded-lg bg-[#2d3f28] text-white text-base font-bold font-sans cursor-pointer transition-all hover:bg-[#1f2c1c] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 mx-auto block">Generate Preview</button>
                 </div>
 
@@ -57,7 +56,7 @@
                     <button id="addImageBtn" onclick="addImageToCanvas()" class="w-[200px] p-3 mb-2 mt-4 rounded-lg bg-[#2d3f28] text-white text-base font-bold font-sans cursor-pointer transition-all hover:bg-[#1f2c1c] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 mx-auto block">Generate Preview</button>
                 </div>
 
-                <button onclick="exportCanvas()" class="w-[200px] p-3 mb-2 rounded-lg bg-[#2d3f28] text-white text-base font-bold font-sans cursor-pointer transition-all hover:bg-[#1f2c1c] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 mx-auto block">Download Image</button>
+                <button onclick="exportCanvas()" id="exportBtn" class="w-[200px] p-3 mb-2 rounded-lg bg-[#2d3f28] text-white text-base font-bold font-sans cursor-pointer transition-all hover:bg-[#1f2c1c] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 mx-auto block hidden">Download Image</button>
             </div>
         </div>
 
