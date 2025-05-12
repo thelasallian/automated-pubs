@@ -55,6 +55,7 @@ const addImageBtn = document.getElementById("addImageBtn");
 const imageControlsDiv = document.getElementById("imageControls");
 const textControlsDiv = document.getElementById("textControls");
 const textInput = document.getElementById("textInput");
+const exportBtn = document.getElementById("exportBtn");
 const typeCFields = document.getElementById("typeCFields");
 
 // Disable image controls by default
@@ -63,7 +64,11 @@ nbtypeDropdown.addEventListener("change", () => {
 
     const shouldEnableImageControls = selectedType === "TypeB" || selectedType === "TypeC";
     const shouldEnableTextControls = selectedType === "TypeA";
+    const shouldEnableExportBtn = selectedType != "";
     const shouldShowTypeCFields = selectedType === "TypeC";
+
+    // Export button toggle
+    exportBtn.style.display = shouldEnableExportBtn ? "block" : "none";
 
     // Image controls toggle
     imgInput.disabled = !shouldEnableImageControls;
