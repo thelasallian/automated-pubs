@@ -268,8 +268,8 @@ function formatQuote(text) {
   // Remove all quotation marks and trim whitespace
   text = text.trim().replace(/^[“"']+|[”"']+$/g, '');
 
-  // Ensure the sentence ends with a period
-  if (!text.endsWith('.')) {
+  // Ensure the sentence ends with a punctuation mark
+  if (text && !/[.!?]$/.test(text)) {
     text += '.';
   }
 
