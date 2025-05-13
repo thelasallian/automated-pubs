@@ -237,7 +237,7 @@ async function addImageToCanvas() {
             // Load font and draw text
             await document.fonts.load("63pt 'HexFranklin'");
             if (nbtype === "TypeC"){
-                //drawQuoteText(text);
+                drawQuoteText(text);
                 drawTypeCSubtext();
             } else {
                 drawHeadlineText(nbtype, subtype, text);
@@ -256,6 +256,101 @@ async function addImageToCanvas() {
         uploadedImg.src = event.target.result;
     };
     reader.readAsDataURL(file);
+}
+
+function formatQuote(text) {
+  // Remove all quotation marks and trim whitespace
+  text = text.trim().replace(/^[“"']+|[”"']+$/g, '');
+
+  // Ensure the sentence ends with a period
+  if (!text.endsWith('.')) {
+    text += '.';
+  }
+
+  // Wrap with standardized quotation
+  return `“${text}”`;
+}
+
+
+function drawQuoteText(text) {
+    // Add quotation marks if missing
+    text = formatQuote(text);
+
+    const charCount = text.length;
+    let fontSize;
+    let y = 163
+
+    if (charCount <= 73) {
+        fontSize = 75;
+        y+=97;
+    } else if (charCount <= 83) {
+        fontSize = 65;
+        y+=85;
+    } else if (charCount <= 93) {
+        fontSize = 60;
+        y+=75;
+    } else if (charCount <= 111) {
+        fontSize = 55;
+        y+=70;
+    } else if (charCount <= 127) {
+        fontSize = 52;
+        y+=68;
+    } else if (charCount <= 168) {
+        fontSize = 50;
+        y+=65;
+    } else if (charCount <= 193) {
+        fontSize = 45;
+        y+=55;
+    } else if (charCount <= 238) {
+        fontSize = 42;
+        y+=53;
+    } else if (charCount <= 268) {
+        fontSize = 40;
+        y+=51;
+    } else if (charCount <= 302) {
+        fontSize = 38;
+        y+=48;
+    } else if (charCount <= 352) {
+        fontSize = 35;
+        y+=45;
+    } else {
+        showAlert("Quote is too long. Please shorten it.");
+        return;
+    }
+
+    const x = 43;
+    const maxWidth = 535;
+    const lineHeight = fontSize * 1.45;
+
+    ctx.font = `${fontSize}pt 'HexFranklin'`;
+    ctx.fillStyle = "red";
+    ctx.textAlign = "left";
+
+    const words = text.split(" ");
+    let line = "";
+
+    for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + " ";
+        const testWidth = ctx.measureText(testLine).width;
+
+        if (testWidth > maxWidth && n > 0) {
+            ctx.fillText(line.trim(), x, y);
+            line = words[n] + " ";
+            y += lineHeight;
+        } else {
+            line = testLine;
+        }
+    }
+
+    if (line) {
+        ctx.fillText(line.trim(), x, y);
+    }
+}
+
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }
 
 function drawTypeCSubtext() {
