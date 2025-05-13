@@ -170,7 +170,11 @@ async function addImageToCanvas() {
     }
 
     if (text.trim() === "") {
-        showAlert("Please enter a headline.");
+        if(nbtype === "TypeC") {
+            showAlert("Please enter a quote.");
+        } else {
+            showAlert("Please enter a headline.");
+        }
         return;
     }
 
