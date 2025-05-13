@@ -247,8 +247,14 @@ async function addImageToCanvas() {
             if (credits.trim() !== "") {
                 ctx.font = "20pt 'HexFranklin'";
                 ctx.fillStyle = "white";
-                ctx.textAlign = "left";
-                ctx.fillText(`Photo Credits: ${credits}`, 20, 560);
+                if(nbtype === "TypeC") {
+                    ctx.textAlign = "right";
+                    credsLength = 'Photo Credits: '.length + credits.length;
+                    ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 40);
+                } else {
+                    ctx.textAlign = "left";
+                    ctx.fillText(`Photo Credits: ${credits}`, 20, 560);
+                }
             }
 
             addCanvasUpdateAnimation();
@@ -479,3 +485,21 @@ const tempBg = new Image();
     tempBg.onload = () => {
         ctx.drawImage(tempBg, 0, 0, canvas.width, canvas.height);
     };
+
+function getAverageLuminance(imageData) {
+    let totalLuminance = 0;
+    const data = imageData.data;
+    const pixelCount = data.length / 4;
+
+    for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+
+        // Relative luminance formula (Rec. 709)
+        const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        totalLuminance += luminance;
+    }
+
+    return totalLuminance / pixelCount;
+}
