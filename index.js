@@ -354,10 +354,14 @@ function toTitleCase(str) {
 }
 
 function drawTypeCSubtext() {
-    console.log("trig");
-    const position = document.getElementById("positionInput").value.toTitleCase();
-    const name = document.getElementById("nameInput").value.toTitleCase();
-    const context = document.getElementById("contextInput").value.toUpperCase();
+    let position = document.getElementById("positionInput").value;
+    let name = document.getElementById("nameInput").value;
+    let context = document.getElementById("contextInput").value;
+
+    // Apply casing transformations
+    position = toTitleCase(position);
+    name = toTitleCase(name);
+    context = context.toUpperCase();
 
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
