@@ -355,9 +355,9 @@ function toTitleCase(str) {
 
 function drawTypeCSubtext() {
     console.log("trig");
-    const position = document.getElementById("positionInput").value;
-    const name = document.getElementById("nameInput").value;
-    const context = document.getElementById("contextInput").value;
+    const position = document.getElementById("positionInput").value.toTitleCase();
+    const name = document.getElementById("nameInput").value.toTitleCase();
+    const context = document.getElementById("contextInput").value.toUpperCase();
 
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
