@@ -109,6 +109,10 @@ h1 {
     line-height: 1.2;
 }
 
+.hover-underline:hover {
+    text-decoration: underline;
+}
+
 /* Improved Select Styling */
 select {
     width: 100%;
