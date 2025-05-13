@@ -323,7 +323,7 @@ function drawQuoteText(text) {
     const lineHeight = fontSize * 1.45;
 
     ctx.font = `${fontSize}pt 'HexFranklin'`;
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "white";
     ctx.textAlign = "left";
 
     const words = text.split(" ");
