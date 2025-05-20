@@ -486,19 +486,15 @@ const tempBg = new Image();
         ctx.drawImage(tempBg, 0, 0, canvas.width, canvas.height);
     };
 
-function getAverageLuminance(imageData) {
-    let totalLuminance = 0;
-    const data = imageData.data;
-    const pixelCount = data.length / 4;
+async function checkPassword() {
+    const pwd = document.getElementById("passwordInput").value;
+    const correctPassword = "1234";
 
-    for (let i = 0; i < data.length; i += 4) {
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
-
-        // Relative luminance formula (Rec. 709)
-        const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        totalLuminance += luminance;
+    if (pwd === correctPassword) {
+        document.getElementById("passwordModal").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+    } else {
+        showAlert("Incorrect password. Please try again.");
     }
 
     return totalLuminance / pixelCount;
