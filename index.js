@@ -554,7 +554,7 @@ const tempBg = new Image();
 
 async function checkPassword() {
     const pwd = document.getElementById("passwordInput").value;
-    const correctPassword = "1234";
+    const correctPassword = "liverayinourhearts";
 
     if (pwd === correctPassword) {
         document.getElementById("passwordModal").style.display = "none";
