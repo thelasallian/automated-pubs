@@ -31,13 +31,28 @@ const subtypeOptions = {
     ]
 };
 
+const credsposOptions = {
+    TypeB: [
+        "Top Left",
+        "Top Right",
+        "Bottom Left",
+        "Bottom Right"
+                ],
+    TypeC: [
+        "Top Right",
+        "Bottom Right"
+    ]
+}
+
 const nbtypeDropdown = document.getElementById("dd_nbtype");
 const subtypeDropdown = document.getElementById("dd_subtype");
+const credsposDropdown = document.getElementById("dd_credspos");
+const credscolorDropdown = document.getElementById("dd_credscolor");
 
 // Populate subtypes
 nbtypeDropdown.addEventListener("change", function () {
 const selectedType = this.value;
-subtypeDropdown.innerHTML = '<option value="" disabled selected>Select a Subtype</option>';
+subtypeDropdown.innerHTML = '<option value="" disabled selected>Select Subtype</option>';
 
 if (subtypeOptions[selectedType]) {
     subtypeOptions[selectedType].forEach(function (optionText) {
@@ -48,6 +63,19 @@ if (subtypeOptions[selectedType]) {
     subtypeDropdown.appendChild(option);
     });
 }
+
+// Populate photo credits position
+credsposDropdown.innerHTML = '<option value="" disabled selected>Select Position</option>';
+
+if (credsposOptions[selectedType]) {
+        credsposOptions[selectedType].forEach(function (optionText) {
+            const option = document.createElement("option");
+            option.value = optionText;
+            option.text = optionText;
+            credsposDropdown.appendChild(option);
+        });
+    }
+
 });
 
 const imgInput = document.getElementById("imgInput");
@@ -152,6 +180,8 @@ async function addImageToCanvas() {
     const credits = document.getElementById("photoCreditsInput").value;
     const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
+    const credspos = credsposDropdown.value;
+    const credscolor = credscolorDropdown.value;
 
     if (nbtype === "TypeC") {
         text = document.getElementById("quoteInput").value;
@@ -161,6 +191,21 @@ async function addImageToCanvas() {
 
     if (!subtype) {
         showAlert("Please select a Subtype before adding an image.");
+        return;
+    }
+
+    if (credits != "" && !credspos && !credscolor) {
+        showAlert("Please select position and color of the Photo Credits.");
+        return;
+    }
+
+    if (credits != "" && !credspos) {
+        showAlert("Please select position of the Photo Credits.");
+        return;
+    }
+
+    if (credits != "" && !credscolor) {
+        showAlert("Please select color of the Photo Credits.");
         return;
     }
 
@@ -243,17 +288,38 @@ async function addImageToCanvas() {
                 drawHeadlineText(nbtype, subtype, text);
             }
 
+            const credspos = credsposDropdown.value;
+            const credscolor = credscolorDropdown.value;
+
             // Draw photo credits
             if (credits.trim() !== "") {
                 ctx.font = "20pt 'HexFranklin'";
-                ctx.fillStyle = "white";
-                if(nbtype === "TypeC") {
+                ctx.fillStyle = credscolor;
+                if (nbtype === "TypeC") {
                     ctx.textAlign = "right";
                     credsLength = 'Photo Credits: '.length + credits.length;
-                    ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 40);
-                } else {
-                    ctx.textAlign = "left";
-                    ctx.fillText(`Photo Credits: ${credits}`, 20, 560);
+                    if (credspos === "Top Right") {
+                        ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 40);
+                    } else if (credspos === "Bottom Right") {
+                        ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 1060);
+                    }
+                    //ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 40);
+                } else { // Type B
+                    if (credspos === "Bottom Left") {
+                        ctx.textAlign = "left";
+                        ctx.fillText(`Photo Credits: ${credits}`, 20, 560);
+                    } else if (credspos === "Bottom Right") {
+                        ctx.textAlign = "right";
+                        credsLength = 'Photo Credits: '.length + credits.length;
+                        ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 560);
+                    } else if (credspos === "Top Left") {
+                        ctx.textAlign = "left";
+                        ctx.fillText(`Photo Credits: ${credits}`, 20, 40);
+                    } else if (credspos === "Top Right") {
+                        ctx.textAlign = "right";
+                        credsLength = 'Photo Credits: '.length + credits.length;
+                        ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 40);
+                    }
                 }
             }
 
@@ -496,6 +562,4 @@ async function checkPassword() {
     } else {
         showAlert("Incorrect password. Please try again.");
     }
-
-    return totalLuminance / pixelCount;
 }
