@@ -9,4 +9,4 @@ A web application that automates the generation of a newsbite headline/quote vis
 ---
 
 Created by: Angelo Guerra<br>
-Date Created: April 2025
+Date Created: May 2025
