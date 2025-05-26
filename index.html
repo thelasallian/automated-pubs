@@ -23,7 +23,7 @@
 
             <!-- Passkey-->
              <div id="passwordModal" class="w-full max-w-[500px] space-y-4 animate-fade-in-up flex flex-col items-center text-center" style="animation-delay: 0.2s;">
-                <input type="text" id="passwordInput" placeholder="Input Password" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
+                <input type="text" autocomplete="new-password" id="passwordInput" placeholder="Input Password" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
                 <button onclick="checkPassword()" class="w-[200px] p-3 mb-2 rounded-lg bg-[#2d3f28] text-white text-base font-bold font-sans cursor-pointer transition-all hover:bg-[#1f2c1c] hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 mx-auto block">Submit</button>
              </div>
 
@@ -40,10 +40,14 @@
                     <option value="" disabled selected>Select a Subtype</option>
                 </select>
 
-                <textarea required id="textInput" placeholder="Input Headline" rows="3" maxlength="100" class="w-full p-3 px-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none hidden"></textarea>
+                <div id="typeABFields" class="hidden">
+                    <textarea required id="textInput" placeholder="Input Headline" rows="3" maxlength="100" class="w-full p-3 px-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none"></textarea>
+                    <h4 class="text-md" id="charCount">Character Count: </h4>
+                </div>
                 <!-- Type C Input Fields -->
                 <div id="typeCFields" class="w-full max-w-[500px] mt-8 hidden">
-                    <textarea required id="quoteInput" placeholder="Input Quote" rows="3" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none"></textarea>
+                    <textarea required id="quoteInput" placeholder="Input Quote" rows="3" class="w-full p-3 px-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none"></textarea>
+                    <h4 class="text-md mb-8" id="charCountTypeC">Character Count: </h4>
                     <input type="text" id="positionInput" placeholder="Input Position" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
                     <input required type="text" id="nameInput" placeholder="Input Name" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
                     <input required type="text" id="contextInput" placeholder="Input Context" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">

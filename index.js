@@ -82,9 +82,12 @@ const imgInput = document.getElementById("imgInput");
 const addImageBtn = document.getElementById("addImageBtn");
 const imageControlsDiv = document.getElementById("imageControls");
 const textControlsDiv = document.getElementById("textControls");
-const textInput = document.getElementById("textInput");
+const typeABFields = document.getElementById("typeABFields");
 const exportBtn = document.getElementById("exportBtn");
 const typeCFields = document.getElementById("typeCFields");
+const textInput = document.getElementById("textInput");
+const charCount = document.getElementById("charCount");
+const charCountTypeC = document.getElementById("charCountTypeC");
 
 // Disable image controls by default
 nbtypeDropdown.addEventListener("change", () => {
@@ -108,7 +111,10 @@ nbtypeDropdown.addEventListener("change", () => {
 
     // Type C Fields toggle
     typeCFields.style.display = shouldShowTypeCFields ? "block" : "none";
-    textInput.style.display = shouldShowTypeCFields ? "none" : "block";
+    typeABFields.style.display = shouldShowTypeCFields ? "none" : "block";
+
+    charCount.textContent = `Character Count:`;
+    charCountTypeC.textContent = `Character Count:`;
 });
 
 // Load image when both dropdowns are selected
@@ -185,8 +191,12 @@ async function addImageToCanvas() {
 
     if (nbtype === "TypeC") {
         text = document.getElementById("quoteInput").value;
+        inputValue = text.trim().replace(/\s+/g, " "); // Trim and normalize spaces
+        count = inputValue.length;
+        charCountTypeC.textContent = `Character Count: ${count}`;
     } else {
         text = document.getElementById("textInput").value;
+        charCount.textContent = `Character Count: ${count}`;
     }
 
     if (!subtype) {
@@ -520,6 +530,10 @@ async function drawText() {
     const text = document.getElementById("textInput").value;
     const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
+
+    const inputValue = text.trim().replace(/\s+/g, " "); // Trim and normalize spaces
+    const count = inputValue.length;
+    charCount.textContent = `Character Count: ${count}`;
 
     if (!subtype) {
         showAlert("Please select a Subtype before adding text.");
