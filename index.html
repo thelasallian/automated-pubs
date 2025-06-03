@@ -41,15 +41,18 @@
                 </select>
 
                 <div id="typeABFields" class="hidden">
+                    <h3 class="text-lg text-left w-full mt-6">Headline</h3>
                     <textarea required id="textInput" placeholder="Input Headline" rows="3" maxlength="100" class="w-full p-3 px-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none"></textarea>
                     <h4 class="text-md" id="charCount">Character Count: </h4>
                 </div>
                 <!-- Type C Input Fields -->
                 <div id="typeCFields" class="w-full max-w-[500px] mt-8 hidden">
+                    <h3 class="text-lg text-left w-full mt-6">Content</h3>
                     <textarea required id="quoteInput" placeholder="Input Quote" rows="3" class="w-full p-3 px-4 rounded-lg bg-white text-gray-800 text-base font-sans min-h-[80px] transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 resize-none"></textarea>
                     <h4 class="text-md mb-8" id="charCountTypeC">Character Count: </h4>
-                    <input type="text" id="positionInput" placeholder="Input Position" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
+                    <h3 class="text-lg text-left w-full">Quote Information</h3>
                     <input required type="text" id="nameInput" placeholder="Input Name" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
+                    <input type="text" id="positionInput" placeholder="Input Position" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
                     <input required type="text" id="contextInput" placeholder="Input Context" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
                 </div>
 
@@ -64,16 +67,17 @@
 
                 <!-- Image Controls Group -->
                 <div id="imageControls" class="mb-4 hidden">
+                    <h3 class="text-lg text-left w-full">Photo Credits</h3>
                     <input type="text" id="photoCreditsInput" placeholder="Input Photo Credits" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
                     
                     <select id="dd_credscolor" name="credscolor" class="w-full p-3 px-4 mb-2 rounded-lg bg-white text-gray-800 text-base font-sans cursor-pointer appearance-none bg-no-repeat bg-right transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
-                        <option value="" disabled selected>Select Fill Color</option>
+                        <option value="" disabled selected>Select Font Color</option>
                         <option value="white">White</option>
                         <option value="black">Black</option>
                     </select>
 
                     <select id="dd_credspos" name="credspos" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans cursor-pointer appearance-none bg-no-repeat bg-right transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
-                        <option value="" disabled selected>Select Position</option>
+                        <option value="" disabled selected>Select Placement</option>
                     </select>
 
                     <input type="file" id="imgInput" accept="image/*" onchange="addImageToCanvas()" class="w-full max-w-[400px] mt-4 text-white">
