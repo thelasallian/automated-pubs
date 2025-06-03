@@ -183,6 +183,8 @@ function loadTemplateImage() {
 async function addImageToCanvas() {
     const file = imgInput.files[0];
     let text;
+    let inputValue;
+    let count;
     const credits = document.getElementById("photoCreditsInput").value;
     const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
@@ -196,6 +198,8 @@ async function addImageToCanvas() {
         charCountTypeC.textContent = `Character Count: ${count}`;
     } else {
         text = document.getElementById("textInput").value;
+        inputValue = text.trim().replace(/\s+/g, " "); // Trim and normalize spaces
+        count = inputValue.length;
         charCount.textContent = `Character Count: ${count}`;
     }
 
