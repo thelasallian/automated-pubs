@@ -5,26 +5,26 @@ let image = new Image();
 const subtypeOptions = {
     TypeA: [
     "University",
+    "Atlas",
     "Menagerie",
     "Sports",
     "Vanguard",
     "Breaking News",
     "Just In",
     "Update",
-    "Halalan2025",
     "University LA Session",
     "Just In LA Session",
     "National Situationer"
     ],
     TypeB: [
     "University",
+    "Atlas",
     "Menagerie",
     "Sports",
     "Vanguard",
     "Breaking News",
     "Just In",
     "Update",
-    "Halalan2025"
     ],
     TypeC: [
     "Quote Visual"
@@ -471,7 +471,7 @@ function drawHeadlineText(nbtype, subtype, text) {
 
     let yStartVal, linesVal, currentLineMaxVal;
 
-    if (nbtype === "TypeA" && ["University", "Menagerie", "Sports", "Vanguard", "Halalan2025", "University LA Session", "Just In LA Session", "National Situationer"].includes(subtype)) { // Type A Batch 1
+    if (nbtype === "TypeA" && ["University", "Atlas", "Menagerie", "Sports", "Vanguard", "University LA Session", "Just In LA Session", "National Situationer"].includes(subtype)) { // Type A Batch 1
         yStartVal = 800;
         linesVal = ["", ""];
         currentLineMaxVal = 2;
@@ -479,7 +479,7 @@ function drawHeadlineText(nbtype, subtype, text) {
         yStartVal = 715;
         linesVal = ["", "", ""];
         currentLineMaxVal = 3;
-    } else if (nbtype === "TypeB" && ["University", "Menagerie", "Sports", "Vanguard", "Breaking News", "Just In", "Update", "Halalan2025"].includes(subtype)) { // Type B
+    } else if (nbtype === "TypeB" && ["University", "Atlas", "Menagerie", "Sports", "Vanguard", "Breaking News", "Just In", "Update"].includes(subtype)) { // Type B
         yStartVal = 830;
         linesVal = ["", ""];
         currentLineMaxVal = 2;
