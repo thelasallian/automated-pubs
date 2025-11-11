@@ -444,7 +444,6 @@ function drawTypeCSubtext() {
     let context = document.getElementById("contextInput").value;
 
     // Apply casing transformations
-    position = toTitleCase(position);
     name = toTitleCase(name);
     context = context.toUpperCase();
 
