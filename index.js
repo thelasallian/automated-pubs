@@ -64,7 +64,7 @@ if (subtypeOptions[selectedType]) {
     });
 }
 
-// Populate photo credits position
+// Populate photo courtesy position
 credsposDropdown.innerHTML = '<option value="" disabled selected>Select Position</option>';
 
 if (credsposOptions[selectedType]) {
@@ -185,7 +185,7 @@ async function addImageToCanvas() {
     let text;
     let inputValue;
     let count;
-    const credits = document.getElementById("photoCreditsInput").value;
+    const courtesy = document.getElementById("photoCourtesyInput").value;
     const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
     const credspos = credsposDropdown.value;
@@ -208,18 +208,18 @@ async function addImageToCanvas() {
         return;
     }
 
-    if (credits != "" && !credspos && !credscolor) {
-        showAlert("Please select position and color of the Photo Credits.");
+    if (courtesy != "" && !credspos && !credscolor) {
+        showAlert("Please select position and color of the Courtesy.");
         return;
     }
 
-    if (credits != "" && !credspos) {
-        showAlert("Please select position of the Photo Credits.");
+    if (courtesy != "" && !credspos) {
+        showAlert("Please select position of the Courtesy.");
         return;
     }
 
-    if (credits != "" && !credscolor) {
-        showAlert("Please select color of the Photo Credits.");
+    if (courtesy != "" && !credscolor) {
+        showAlert("Please select color of the Courtesy.");
         return;
     }
 
@@ -305,34 +305,33 @@ async function addImageToCanvas() {
             const credspos = credsposDropdown.value;
             const credscolor = credscolorDropdown.value;
 
-            // Draw photo credits
-            if (credits.trim() !== "") {
+            // Draw courtesy
+            if (courtesy.trim() !== "") {
                 ctx.font = "20pt 'HexFranklin'";
                 ctx.fillStyle = credscolor;
                 if (nbtype === "TypeC") {
                     ctx.textAlign = "right";
-                    credsLength = 'Photo Credits: '.length + credits.length;
+                    credsLength = 'Courtesy: '.length + courtesy.length;
                     if (credspos === "Top Right") {
-                        ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 40);
+                        ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 40);
                     } else if (credspos === "Bottom Right") {
-                        ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 1060);
+                        ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 1060);
                     }
-                    //ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 40);
                 } else { // Type B
                     if (credspos === "Bottom Left") {
                         ctx.textAlign = "left";
-                        ctx.fillText(`Photo Credits: ${credits}`, 20, 560);
+                        ctx.fillText(`Courtesy: ${courtesy}`, 20, 560);
                     } else if (credspos === "Bottom Right") {
                         ctx.textAlign = "right";
-                        credsLength = 'Photo Credits: '.length + credits.length;
-                        ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 560);
+                        credsLength = 'Courtesy: '.length + courtesy.length;
+                        ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 560);
                     } else if (credspos === "Top Left") {
                         ctx.textAlign = "left";
-                        ctx.fillText(`Photo Credits: ${credits}`, 20, 40);
+                        ctx.fillText(`Courtesy: ${courtesy}`, 20, 40);
                     } else if (credspos === "Top Right") {
                         ctx.textAlign = "right";
-                        credsLength = 'Photo Credits: '.length + credits.length;
-                        ctx.fillText(`Photo Credits: ${credits}`, 1080 - credsLength, 40);
+                        credsLength = 'Courtesy: '.length + courtesy.length;
+                        ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 40);
                     }
                 }
             }
