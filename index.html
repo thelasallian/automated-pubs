@@ -67,8 +67,14 @@
 
                 <!-- Image Controls Group -->
                 <div id="imageControls" class="mb-4 hidden">
-                    <h3 class="text-lg text-left w-full">Photo Credits</h3>
-                    <input type="text" id="photoCreditsInput" placeholder="Input Photo Credits" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
+                    <h3 class="text-lg text-left w-full">Visual Attribution</h3>
+                    <select id="dd_credsoption" name="credsoption" class="w-full p-3 px-4 mb-2 rounded-lg bg-white text-gray-800 text-base font-sans cursor-pointer appearance-none bg-no-repeat bg-right transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
+                        <option value="" disabled selected>Select Visual Attribution</option>
+                        <option value="staffer">Photo Staffer</option>
+                        <option value="borrowed">Borrowed Visual</option>
+                    </select>
+
+                    <input type="text" id="photoCourtesyInput" placeholder="Input Courtesy/Photo Owner" class="w-full p-3 px-4 mb-4 rounded-lg bg-white text-gray-800 text-base font-sans transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
                     
                     <select id="dd_credscolor" name="credscolor" class="w-full p-3 px-4 mb-2 rounded-lg bg-white text-gray-800 text-base font-sans cursor-pointer appearance-none bg-no-repeat bg-right transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#4a6741]/30 mx-auto block">
                         <option value="" disabled selected>Select Font Color</option>

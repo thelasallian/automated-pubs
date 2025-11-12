@@ -48,6 +48,7 @@ const nbtypeDropdown = document.getElementById("dd_nbtype");
 const subtypeDropdown = document.getElementById("dd_subtype");
 const credsposDropdown = document.getElementById("dd_credspos");
 const credscolorDropdown = document.getElementById("dd_credscolor");
+const credsoptionDropdown = document.getElementById("dd_credsoption");
 
 // Populate subtypes
 nbtypeDropdown.addEventListener("change", function () {
@@ -189,7 +190,8 @@ async function addImageToCanvas() {
     const nbtype = nbtypeDropdown.value;
     const subtype = subtypeDropdown.value;
     const credspos = credsposDropdown.value;
-    const credscolor = credscolorDropdown.value;
+    const credscolor = credscolorDropdown.value
+    const credsoption = credsoptionDropdown.value;
 
     if (nbtype === "TypeC") {
         text = document.getElementById("quoteInput").value;
@@ -208,8 +210,13 @@ async function addImageToCanvas() {
         return;
     }
 
-    if (courtesy != "" && !credspos && !credscolor) {
-        showAlert("Please select position and color of the Courtesy.");
+    if (courtesy != "" && !credspos && !credscolor && !credsoption) {
+        showAlert("Please select position, color, and type of Courtesy.");
+        return;
+    }
+
+    if (courtesy != "" && !credsoption) {
+        showAlert("Please select type of the Courtesy.");
         return;
     }
 
@@ -304,6 +311,7 @@ async function addImageToCanvas() {
 
             const credspos = credsposDropdown.value;
             const credscolor = credscolorDropdown.value;
+            const credsoption = credsoptionDropdown.value;
 
             // Draw courtesy
             if (courtesy.trim() !== "") {
@@ -311,27 +319,57 @@ async function addImageToCanvas() {
                 ctx.fillStyle = credscolor;
                 if (nbtype === "TypeC") {
                     ctx.textAlign = "right";
-                    credsLength = 'Courtesy: '.length + courtesy.length;
-                    if (credspos === "Top Right") {
-                        ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 40);
-                    } else if (credspos === "Bottom Right") {
-                        ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 1060);
+                    if (credsoption === "staffer") {
+                        credsLength = 'Photo by '.length + courtesy.length;
+                        if (credspos === "Top Right") {
+                            ctx.fillText(`Photo by ${courtesy}`, 1080 - credsLength, 40);
+                        } else if (credspos === "Bottom Right") {
+                            ctx.fillText(`Photo by ${courtesy}`, 1080 - credsLength, 1060);
+                        }
                     }
+                    else { // borrowed
+                        credsLength = 'Courtesy: '.length + courtesy.length;
+                        if (credspos === "Top Right") {
+                            ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 40);
+                        } else if (credspos === "Bottom Right") {
+                            ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 1060);
+                        }
+                    }
+                    
                 } else { // Type B
-                    if (credspos === "Bottom Left") {
+                    if (credsoption === "staffer") {
+                        if (credspos === "Bottom Left") {
+                        ctx.textAlign = "left";
+                        ctx.fillText(`Photo by ${courtesy}`, 20, 560);
+                        } else if (credspos === "Bottom Right") {
+                            ctx.textAlign = "right";
+                            credsLength = 'Photo by '.length + courtesy.length;
+                            ctx.fillText(`Photo by ${courtesy}`, 1080 - credsLength, 560);
+                        } else if (credspos === "Top Left") {
+                            ctx.textAlign = "left";
+                            ctx.fillText(`Photo by ${courtesy}`, 20, 40);
+                        } else if (credspos === "Top Right") {
+                            ctx.textAlign = "right";
+                            credsLength = 'Photo by '.length + courtesy.length;
+                            ctx.fillText(`Photo by ${courtesy}`, 1080 - credsLength, 40);
+                        }
+                    }
+                    else { // borrowed
+                       if (credspos === "Bottom Left") {
                         ctx.textAlign = "left";
                         ctx.fillText(`Courtesy: ${courtesy}`, 20, 560);
-                    } else if (credspos === "Bottom Right") {
-                        ctx.textAlign = "right";
-                        credsLength = 'Courtesy: '.length + courtesy.length;
-                        ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 560);
-                    } else if (credspos === "Top Left") {
-                        ctx.textAlign = "left";
-                        ctx.fillText(`Courtesy: ${courtesy}`, 20, 40);
-                    } else if (credspos === "Top Right") {
-                        ctx.textAlign = "right";
-                        credsLength = 'Courtesy: '.length + courtesy.length;
-                        ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 40);
+                        } else if (credspos === "Bottom Right") {
+                            ctx.textAlign = "right";
+                            credsLength = 'Courtesy: '.length + courtesy.length;
+                            ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 560);
+                        } else if (credspos === "Top Left") {
+                            ctx.textAlign = "left";
+                            ctx.fillText(`Courtesy: ${courtesy}`, 20, 40);
+                        } else if (credspos === "Top Right") {
+                            ctx.textAlign = "right";
+                            credsLength = 'Courtesy: '.length + courtesy.length;
+                            ctx.fillText(`Courtesy: ${courtesy}`, 1080 - credsLength, 40);
+                        } 
                     }
                 }
             }
