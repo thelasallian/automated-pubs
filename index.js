@@ -1,6 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 let image = new Image();
+let fontSize;
 
 const subtypeOptions = {
     TypeA: [
@@ -89,6 +90,17 @@ const typeCFields = document.getElementById("typeCFields");
 const textInput = document.getElementById("textInput");
 const charCount = document.getElementById("charCount");
 const charCountTypeC = document.getElementById("charCountTypeC");
+const overrideFontCheckbox = document.getElementById("overrideFontCheckbox");
+const overrideFontSizeInput = document.getElementById("overrideFontSize");
+
+overrideFontCheckbox.addEventListener("change", () => {
+    overrideFontSizeInput.disabled = !overrideFontCheckbox.checked;
+});
+
+document.getElementById("overrideFontCheckbox").addEventListener("change", function() {
+    const input = document.getElementById("overrideFontSize");
+    input.disabled = !this.checked;
+});
 
 // Disable image controls by default
 nbtypeDropdown.addEventListener("change", () => {
@@ -396,49 +408,60 @@ function formatQuote(text) {
 
 
 function drawQuoteText(text) {
-    // Add quotation marks if missing
+    // Apply standardized quotation formatting
     text = formatQuote(text);
 
     const charCount = text.length;
-    let fontSize;
-    let y = 163
+    let y = 163;
 
-    if (charCount <= 73) {
-        fontSize = 75;
-        y+=97;
-    } else if (charCount <= 83) {
-        fontSize = 65;
-        y+=85;
-    } else if (charCount <= 93) {
-        fontSize = 60;
-        y+=75;
-    } else if (charCount <= 111) {
-        fontSize = 55;
-        y+=70;
-    } else if (charCount <= 127) {
-        fontSize = 52;
-        y+=68;
-    } else if (charCount <= 168) {
-        fontSize = 50;
-        y+=65;
-    } else if (charCount <= 193) {
-        fontSize = 45;
-        y+=55;
-    } else if (charCount <= 238) {
-        fontSize = 42;
-        y+=53;
-    } else if (charCount <= 268) {
-        fontSize = 40;
-        y+=51;
-    } else if (charCount <= 302) {
-        fontSize = 38;
-        y+=48;
-    } else if (charCount <= 352) {
-        fontSize = 35;
-        y+=45;
+    // If checkbox checked → use custom font size
+    const overrideEnabled = overrideFontCheckbox.checked;
+    const customSize = parseInt(overrideFontSizeInput.value);
+
+    if (overrideEnabled && !isNaN(customSize)) {
+        fontSize = customSize;
+        y += 90; // Adjust baseline to match original spacing
     } else {
-        showAlert("Quote is too long. Please shorten it.");
-        return;
+        // ORIGINAL AUTO FONT SIZE LOGIC
+        if (charCount <= 73) {
+            fontSize = 75;
+            y+=97;
+        } else if (charCount <= 83) {
+            fontSize = 65;
+            y+=85;
+        } else if (charCount <= 93) {
+            fontSize = 60;
+            y+=75;
+        } else if (charCount <= 111) {
+            fontSize = 55;
+            y+=70;
+        } else if (charCount <= 127) {
+            fontSize = 52;
+            y+=68;
+        } else if (charCount <= 168) {
+            fontSize = 50;
+            y+=65;
+        } else if (charCount <= 193) {
+            fontSize = 45;
+            y+=55;
+        } else if (charCount <= 238) {
+            fontSize = 42;
+            y+=53;
+        } else if (charCount <= 268) {
+            fontSize = 40;
+            y+=51;
+        } else if (charCount <= 302) {
+            fontSize = 38;
+            y+=48;
+        } else if (charCount <= 352) {
+            fontSize = 35;
+            y+=45;
+        } else {
+            showAlert("Quote is too long. Please shorten it.");
+            return;
+        }
+        quoteFontSize = fontSize;
+        overrideFontSizeInput.value = fontSize;
     }
 
     const x = 43;

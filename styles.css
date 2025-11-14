@@ -476,3 +476,16 @@ canvas {
 .alert.hide {
     animation: slideOut 0.3s ease-out forwards;
 }
+
+.override-input:disabled {
+    background-color: #e5e7eb !important; /* Tailwind gray-200 */
+    color: #9ca3af !important;            /* Tailwind gray-400 */
+    cursor: not-allowed;
+    border-color: #d1d5db;                /* gray-300 */
+}
+
+.override-checkbox {
+    transform: scale(2);     /* increases visual size */
+    transform-origin: center;  /* keeps it aligned */
+    cursor: pointer;
+}
