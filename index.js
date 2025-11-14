@@ -397,7 +397,7 @@ function formatQuote(text) {
   // Remove all quotation marks and trim whitespace
   text = text.trim().replace(/^[“"']+|[”"']+$/g, '');
 
-  // Ensure the sentence ends with a punctuation mark
+  // Ensure the sentence ends with a punctuation mark only if it's not ., ?, or !
   if (text && !/[.!?]$/.test(text)) {
     text += '.';
   }
@@ -408,88 +408,94 @@ function formatQuote(text) {
 
 
 function drawQuoteText(text) {
-    // Apply standardized quotation formatting
     text = formatQuote(text);
 
     const charCount = text.length;
+    let fontSize;
     let y = 163;
 
-    // If checkbox checked → use custom font size
+    // CUSTOM SIZE LOGIC
     const overrideEnabled = overrideFontCheckbox.checked;
     const customSize = parseInt(overrideFontSizeInput.value);
 
     if (overrideEnabled && !isNaN(customSize)) {
         fontSize = customSize;
-        y += 90; // Adjust baseline to match original spacing
+        y += 90;
     } else {
-        // ORIGINAL AUTO FONT SIZE LOGIC
-        if (charCount <= 73) {
-            fontSize = 75;
-            y+=97;
-        } else if (charCount <= 83) {
-            fontSize = 65;
-            y+=85;
-        } else if (charCount <= 93) {
-            fontSize = 60;
-            y+=75;
-        } else if (charCount <= 111) {
-            fontSize = 55;
-            y+=70;
-        } else if (charCount <= 127) {
-            fontSize = 52;
-            y+=68;
-        } else if (charCount <= 168) {
-            fontSize = 50;
-            y+=65;
-        } else if (charCount <= 193) {
-            fontSize = 45;
-            y+=55;
-        } else if (charCount <= 238) {
-            fontSize = 42;
-            y+=53;
-        } else if (charCount <= 268) {
-            fontSize = 40;
-            y+=51;
-        } else if (charCount <= 302) {
-            fontSize = 38;
-            y+=48;
-        } else if (charCount <= 352) {
-            fontSize = 35;
-            y+=45;
-        } else {
+        // YOUR AUTO FONT SIZE RANGES
+        if (charCount <= 73) { fontSize = 75; y+=97; }
+        else if (charCount <= 83) { fontSize = 65; y+=85; }
+        else if (charCount <= 93) { fontSize = 60; y+=75; }
+        else if (charCount <= 111) { fontSize = 55; y+=70; }
+        else if (charCount <= 127) { fontSize = 52; y+=68; }
+        else if (charCount <= 168) { fontSize = 50; y+=65; }
+        else if (charCount <= 193) { fontSize = 45; y+=55; }
+        else if (charCount <= 238) { fontSize = 42; y+=53; }
+        else if (charCount <= 268) { fontSize = 40; y+=51; }
+        else if (charCount <= 302) { fontSize = 38; y+=48; }
+        else if (charCount <= 352) { fontSize = 35; y+=45; }
+        else {
             showAlert("Quote is too long. Please shorten it.");
             return;
         }
-        quoteFontSize = fontSize;
-        overrideFontSizeInput.value = fontSize;
     }
+
+    // Save to text field
+    overrideFontSizeInput.value = fontSize;
 
     const x = 43;
     const maxWidth = 535;
     const lineHeight = fontSize * 1.45;
 
-    ctx.font = `${fontSize}pt 'HexFranklin'`;
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
 
-    const words = text.split(" ");
+    const segments = parseStyledText(text);
     let line = "";
+    let lineSegments = [];
+    yStart = y;
 
-    for (let n = 0; n < words.length; n++) {
-        const testLine = line + words[n] + " ";
-        const testWidth = ctx.measureText(testLine).width;
+    function measureLine(segments) {
+        return segments.reduce((w, seg) => {
+            const style = `${seg.bold ? "bold " : ""}${seg.italic ? "italic " : ""}${fontSize}pt 'HexFranklin'`;
+            ctx.font = style;
+            return w + ctx.measureText(seg.text).width;
+        }, 0);
+    }
 
-        if (testWidth > maxWidth && n > 0) {
-            ctx.fillText(line.trim(), x, y);
-            line = words[n] + " ";
-            y += lineHeight;
-        } else {
-            line = testLine;
+    function drawLine(segments, yPos) {
+        let xPos = x;
+        for (const seg of segments) {
+            const style = `${seg.bold ? "bold " : ""}${seg.italic ? "italic " : ""}${fontSize}pt 'HexFranklin'`;
+            ctx.font = style;
+            ctx.fillText(seg.text, xPos, yPos);
+            xPos += ctx.measureText(seg.text).width;
         }
     }
 
-    if (line) {
-        ctx.fillText(line.trim(), x, y);
+    let currentLine = [];
+    let currentWidth = 0;
+
+    for (const seg of segments) {
+        const words = seg.text.split(" ");
+        for (let i = 0; i < words.length; i++) {
+            let word = words[i] + " ";
+
+            const testSeg = { text: word, bold: seg.bold, italic: seg.italic };
+            const testWidth = measureLine(currentLine.concat([testSeg]));
+
+            if (testWidth > maxWidth && currentLine.length > 0) {
+                drawLine(currentLine, y);
+                y += lineHeight;
+                currentLine = [testSeg];
+            } else {
+                currentLine.push(testSeg);
+            }
+        }
+    }
+
+    if (currentLine.length > 0) {
+        drawLine(currentLine, y);
     }
 }
 
@@ -522,6 +528,30 @@ function drawTypeCSubtext() {
     // Draw context
     ctx.font = "normal 21pt 'HexFranklin'";
     ctx.fillText(context, 44, 970);
+}
+
+function parseStyledText(text) {
+    const regex = /(<\/?[^>]+>)/g;
+    const rawParts = text.split(regex).filter(Boolean);
+
+    const segments = [];
+    let currentStyle = { bold: false, italic: false };
+
+    for (let part of rawParts) {
+        if (part === "<b>") currentStyle.bold = true;
+        else if (part === "</b>") currentStyle.bold = false;
+        else if (part === "<i>") currentStyle.italic = true;
+        else if (part === "</i>") currentStyle.italic = false;
+        else {
+            segments.push({
+                text: part,
+                bold: currentStyle.bold,
+                italic: currentStyle.italic
+            });
+        }
+    }
+
+    return segments;
 }
 
 function drawHeadlineText(nbtype, subtype, text) {
