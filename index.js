@@ -433,7 +433,7 @@ function drawQuoteText(text) {
         else if (charCount <= 238) { fontSize = 42; y+=53; }
         else if (charCount <= 268) { fontSize = 40; y+=51; }
         else if (charCount <= 302) { fontSize = 38; y+=48; }
-        else if (charCount <= 352) { fontSize = 35; y+=45; }
+        else { fontSize = 35; y+=45; }
     }
 
     // Save to text field
@@ -475,8 +475,12 @@ function drawQuoteText(text) {
     for (const seg of segments) {
         const words = seg.text.split(" ");
         for (let i = 0; i < words.length; i++) {
+            if (words[i] === "") continue; // Skip empty words
+            
             let word = words[i];
-            if (i !== words.length - 1) word += " ";
+            if (i !== words.length - 1 || (i === words.length - 1 && seg.text.endsWith(" "))) {
+                word += " ";
+            }
 
             const testSeg = { text: word, bold: seg.bold, italic: seg.italic };
             const testWidth = measureLine(currentLine.concat([testSeg]));
