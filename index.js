@@ -475,7 +475,8 @@ function drawQuoteText(text) {
     for (const seg of segments) {
         const words = seg.text.split(" ");
         for (let i = 0; i < words.length; i++) {
-            let word = words[i] + " ";
+            let word = words[i];
+            if (i !== words.length - 1) word += " ";
 
             const testSeg = { text: word, bold: seg.bold, italic: seg.italic };
             const testWidth = measureLine(currentLine.concat([testSeg]));
