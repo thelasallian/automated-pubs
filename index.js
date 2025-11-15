@@ -433,7 +433,11 @@ function drawQuoteText(text) {
         else if (charCount <= 238) { fontSize = 42; y+=53; }
         else if (charCount <= 268) { fontSize = 40; y+=51; }
         else if (charCount <= 302) { fontSize = 38; y+=48; }
-        else { fontSize = 35; y+=45; }
+        else if (charCount <= 352) { fontSize = 35; y+=45; }
+        else {
+            showAlert("Quote is too long. Please shorten it.");
+            return;
+        }
     }
 
     // Save to text field
@@ -473,18 +477,9 @@ function drawQuoteText(text) {
     let currentWidth = 0;
 
     for (const seg of segments) {
-        const words = seg.text.split(" ").filter(w => w !== ""); // Filter out empty strings
+        const words = seg.text.split(" ");
         for (let i = 0; i < words.length; i++) {
-            let word = words[i];
-            
-            // Add space before word if:
-            // - currentLine has words AND
-            // - the last word in currentLine is not just punctuation like opening quote
-            const needsSpaceBefore = currentLine.length > 0 && 
-                                     !/^["']$/.test(currentLine[currentLine.length - 1].text.trim());
-            if (needsSpaceBefore) {
-                word = " " + word;
-            }
+            let word = words[i] + " ";
 
             const testSeg = { text: word, bold: seg.bold, italic: seg.italic };
             const testWidth = measureLine(currentLine.concat([testSeg]));
@@ -492,9 +487,7 @@ function drawQuoteText(text) {
             if (testWidth > maxWidth && currentLine.length > 0) {
                 drawLine(currentLine, y);
                 y += lineHeight;
-                // Remove leading space when word wraps to new line
-                const wordWithoutLeadingSpace = words[i];
-                currentLine = [{ text: wordWithoutLeadingSpace, bold: seg.bold, italic: seg.italic }];
+                currentLine = [testSeg];
             } else {
                 currentLine.push(testSeg);
             }
