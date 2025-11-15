@@ -471,26 +471,20 @@ function drawQuoteText(text) {
 
     let currentLine = [];
     let currentWidth = 0;
-    let isFirstWordOverall = true; // Track if we're at the very first word of entire text
 
     for (const seg of segments) {
-        const words = seg.text.split(" ");
+        const words = seg.text.split(" ").filter(w => w !== ""); // Filter out empty strings
         for (let i = 0; i < words.length; i++) {
-            if (words[i] === "") continue; // Skip empty words
-            
             let word = words[i];
             
-            // Add space after word unless:
-            // 1. It's the very first word of the entire text, OR
-            // 2. It's the last word in the segment AND the segment doesn't end with a space
-            const shouldAddSpace = !isFirstWordOverall && 
-                                   (i < words.length - 1 || seg.text.endsWith(" "));
-            
-            if (shouldAddSpace) {
-                word += " ";
+            // Add space before word if:
+            // - currentLine has words AND
+            // - the last word in currentLine is not just punctuation like opening quote
+            const needsSpaceBefore = currentLine.length > 0 && 
+                                     !/^["']$/.test(currentLine[currentLine.length - 1].text.trim());
+            if (needsSpaceBefore) {
+                word = " " + word;
             }
-            
-            isFirstWordOverall = false; // After processing first word, this is always false
 
             const testSeg = { text: word, bold: seg.bold, italic: seg.italic };
             const testWidth = measureLine(currentLine.concat([testSeg]));
@@ -498,7 +492,9 @@ function drawQuoteText(text) {
             if (testWidth > maxWidth && currentLine.length > 0) {
                 drawLine(currentLine, y);
                 y += lineHeight;
-                currentLine = [testSeg];
+                // Remove leading space when word wraps to new line
+                const wordWithoutLeadingSpace = words[i];
+                currentLine = [{ text: wordWithoutLeadingSpace, bold: seg.bold, italic: seg.italic }];
             } else {
                 currentLine.push(testSeg);
             }
