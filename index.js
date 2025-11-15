@@ -479,7 +479,14 @@ function drawQuoteText(text) {
     for (const seg of segments) {
         const words = seg.text.split(" ");
         for (let i = 0; i < words.length; i++) {
-            let word = words[i] + " ";
+            // Skip empty words
+            if (words[i] === "") continue;
+            
+            let word = words[i];
+            // Add space after word except for the last word in the last segment
+            if (i < words.length - 1) {
+                word += " ";
+            }
 
             const testSeg = { text: word, bold: seg.bold, italic: seg.italic };
             const testWidth = measureLine(currentLine.concat([testSeg]));
@@ -537,12 +544,20 @@ function parseStyledText(text) {
     const segments = [];
     let currentStyle = { bold: false, italic: false };
 
-    for (let part of rawParts) {
+    for (let i = 0; i < rawParts.length; i++) {
+        const part = rawParts[i];
+        
         if (part === "<b>") currentStyle.bold = true;
         else if (part === "</b>") currentStyle.bold = false;
         else if (part === "<i>") currentStyle.italic = true;
         else if (part === "</i>") currentStyle.italic = false;
         else {
+            //Skip segments that are just opening/closing quotes added by formatQuote
+            const trimmed = part.trim();
+            if (trimmed === '"' || trimmed === "'" || trimmed === "") {
+                continue;
+            }
+            
             segments.push({
                 text: part,
                 bold: currentStyle.bold,
