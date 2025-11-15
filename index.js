@@ -471,6 +471,7 @@ function drawQuoteText(text) {
 
     let currentLine = [];
     let currentWidth = 0;
+    let isFirstWordOverall = true; // Track if we're at the very first word of entire text
 
     for (const seg of segments) {
         const words = seg.text.split(" ");
@@ -478,9 +479,18 @@ function drawQuoteText(text) {
             if (words[i] === "") continue; // Skip empty words
             
             let word = words[i];
-            if (i !== words.length - 1 || (i === words.length - 1 && seg.text.endsWith(" "))) {
+            
+            // Add space after word unless:
+            // 1. It's the very first word of the entire text, OR
+            // 2. It's the last word in the segment AND the segment doesn't end with a space
+            const shouldAddSpace = !isFirstWordOverall && 
+                                   (i < words.length - 1 || seg.text.endsWith(" "));
+            
+            if (shouldAddSpace) {
                 word += " ";
             }
+            
+            isFirstWordOverall = false; // After processing first word, this is always false
 
             const testSeg = { text: word, bold: seg.bold, italic: seg.italic };
             const testWidth = measureLine(currentLine.concat([testSeg]));
