@@ -434,10 +434,6 @@ function drawQuoteText(text) {
         else if (charCount <= 268) { fontSize = 40; y+=51; }
         else if (charCount <= 302) { fontSize = 38; y+=48; }
         else if (charCount <= 352) { fontSize = 35; y+=45; }
-        else {
-            showAlert("Quote is too long. Please shorten it.");
-            return;
-        }
     }
 
     // Save to text field
